@@ -1,7 +1,6 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
-import { removeFromCart, addToCart } from '../features/cart/cartSlice';
-import { X, Plus, Minus } from 'lucide-react'; // optional icons
+import { removeFromCart, addToCart, decreaseQuantity } from '../features/cart/cartSlice';
+import { X, Plus, Minus } from 'lucide-react'; 
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -16,10 +15,7 @@ const CartItem = ({ item }) => {
 
   const decreaseQty = () => {
     if (item.quantity > 1) {
-      dispatch({
-        type: 'cart/decreaseQuantity',
-        payload: item.id,
-      });
+      dispatch(decreaseQuantity(item.id));
     } else {
       handleRemove();
     }
