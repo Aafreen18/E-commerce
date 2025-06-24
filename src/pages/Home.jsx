@@ -5,7 +5,7 @@ import { fetchProducts } from '../features/products/productSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { items: products, loading, error } = useSelector((state) => state.products);
+  const { items: data, loading, error } = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -19,7 +19,7 @@ const Home = () => {
       {error && <p className="text-red-500">Error: {error}</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 !m-5">
-        {products.products?.map((product) => (
+        {data.products?.map((product) => (
           <ProductCard key={product.id} product={product}  />
         ))}
       </div>

@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { removeFromCart, addToCart, decreaseQuantity } from '../features/cart/cartSlice';
-import { X, Plus, Minus } from 'lucide-react'; 
+import { Plus, Minus } from 'lucide-react'; 
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const CartItem = ({ item }) => {
         onClick={handleRemove}
         className="ml-4 text-red-500 hover:text-red-700"
       >
-        <X size={20} />
+        <RiDeleteBin5Line size={20}/>
       </button>
     </div>
   );
