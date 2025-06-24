@@ -7,7 +7,7 @@ const Cart = () => {
 
   return (
     <div className="">
-      <h2 className={`text-2xl font-bold mb-6 ${items.length > 0 ? "text-left" : "text-center"}`}>
+      <h2 className={`text-2xl font-bold !p-3 ${items.length > 0 ? "text-left" : "text-center"}`}>
         Your Cart
       </h2>
       {items.length === 0 ? (
@@ -25,9 +25,20 @@ const Cart = () => {
           {items.map((item) => (
             <CartItem key={item.id} item={item} />
           ))}
-          <div className="text-right font-bold text-xl mt-4">
-            Total Amount: ${totalPrice.toFixed(2)}
+          <div className="bg-blue-100 rounded-2xl !m-3 !p-3 shadow-lg sm:p-8 mx-4 sm:mx-10 my-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+            <div className="flex flex-col sm:flex-row justify-between items-center">
+              <div className="text-xl font-semibold text-gray-800 mb-4 sm:mb-0">
+                Total Amount: <span className="text-blue-600 font-bold">${totalPrice.toFixed(2)}</span>
+              </div>
+              <Link
+                to="/checkout"
+                className="bg-white !p-2 !m-2 rounded-lg text-blue-600 font-semibold shadow hover:transform transition-transform hover:scale-105"
+              >
+                Proceed to Checkout
+              </Link>
+            </div>
           </div>
+
         </>
       )}
     </div>

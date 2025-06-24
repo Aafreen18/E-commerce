@@ -33,7 +33,7 @@ const CartItem = ({ item, index }) => {
   return (
     <motion.div
       ref={ref}
-      className="flex flex-col sm:flex-row gap-4 !p-5 rounded-lg bg-white"
+      className="flex flex-col sm:flex-row gap-4 !px-5 rounded-lg bg-white"
       style={{
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         marginBottom: '1rem', // Add space between items
@@ -62,14 +62,14 @@ const CartItem = ({ item, index }) => {
 
       {/* Info */}
       <div className="flex-1 flex flex-col justify-between">
-        <div className='!px-5'>
+        <div className='!p-4'>
           <h4 className="text-lg font-semibold line-clamp-2">{item.title}</h4>
           <p className="text-gray-600 mt-1">${item.price.toFixed(2)}</p>
         </div>
 
         {/* Combined Quantity and Delete Controls */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 !p-5">
+          <div className="flex items-center gap-4 !p-4">
             <motion.button
               onClick={decreaseQty}
               className="p-2 text-gray-700 hover:bg-blue-600 rounded-full hover:text-white"
