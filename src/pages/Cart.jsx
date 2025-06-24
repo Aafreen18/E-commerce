@@ -26,7 +26,7 @@ const Cart = () => {
             <CartItem key={item.id} item={item} />
           ))}
           <div className="text-right font-bold text-xl mt-4">
-            Total: ${totalPrice.toFixed(2)}
+            Total Amount: ${totalPrice.toFixed(2)}
           </div>
         </>
       )}
