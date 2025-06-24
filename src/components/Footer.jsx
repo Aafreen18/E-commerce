@@ -46,8 +46,8 @@ const Footer = () => {
   });
 
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-15 !p-5">
-      <div className="mx-auto px-6 py-10 flex flex-col md:flex-row justify-cente md:justify-around gap-8">
+    <footer className="bg-gray-900 text-gray-300 !p-5">
+      <div className="px-6 py-10 flex flex-col md:flex-row justify-cente md:justify-around gap-8">
         {/* Brand Info */}
         <motion.div 
           ref={brandRef}

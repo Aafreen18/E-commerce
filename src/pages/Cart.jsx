@@ -1,14 +1,25 @@
 import CartItem from '../components/CartItem';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
   const { items, totalPrice } = useSelector((state) => state.cart);
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
+    <div className="">
+      <h2 className={`text-2xl font-bold mb-6 ${items.length > 0 ? "text-left" : "text-center"}`}>
+        Your Cart
+      </h2>
       {items.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-gray-600">Your cart is empty.</p>
+          <Link
+            to="/"
+            className="bg-blue-600 text-white !px-2 !py-1 rounded-md hover:bg-blue-700 transition-colors w-fit"
+          >
+            Continue Shopping
+          </Link>
+        </div>
       ) : (
         <>
           {items.map((item) => (
