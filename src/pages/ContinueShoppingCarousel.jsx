@@ -19,9 +19,9 @@ const ContinueShoppingCarousel = () => {
   useEffect(() => {
     const updateVisibleCount = () => {
       const width = window.innerWidth;
-      if (width < 640) setVisibleCount(1);       // small
-      else if (width < 1024) setVisibleCount(2); // medium
-      else setVisibleCount(3);                   // large
+      if (width < 640) setVisibleCount(1);
+      else if (width < 1024) setVisibleCount(2);
+      else setVisibleCount(3);
     };
 
     updateVisibleCount();
@@ -56,21 +56,21 @@ const ContinueShoppingCarousel = () => {
 
   if (error)
     return (
-      <div className="text-center py-8 text-red-500">
+      <div className="text-center !py-8 text-red-500">
         Error loading products: {error}
       </div>
     );
 
   if (products.length === 0)
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center !py-8 text-gray-500">
         No products available
       </div>
     );
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white w-full">
-      <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">
+    <section className="bg-gradient-to-b from-gray-50 to-white w-full">
+      <h2 className="text-2xl font-bold !p-3">
         Continue Shopping
       </h2>
 
@@ -78,18 +78,18 @@ const ContinueShoppingCarousel = () => {
         {/* Navigation Buttons */}
         <button
           onClick={handlePrevious}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow hover:scale-110 transition"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-blue-600 !p-2 !m-2 rounded-full shadow hover:scale-110 transition"
           aria-label="Previous"
         >
-          <ChevronLeftIcon className="h-6 w-6 text-gray-700" />
+          <ChevronLeftIcon className="h-6 w-6 text-white" />
         </button>
 
         <button
           onClick={handleNext}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow hover:scale-110 transition"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-blue-600 !p-2 !m-2 rounded-full shadow hover:scale-110 transition"
           aria-label="Next"
         >
-          <ChevronRightIcon className="h-6 w-6 text-gray-700" />
+          <ChevronRightIcon className="h-6 w-6 text-white" />
         </button>
 
         {/* Carousel */}
@@ -100,12 +100,12 @@ const ContinueShoppingCarousel = () => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="flex gap-6 w-full"
+            className="flex justify-center gap-6 w-full !p-3"
           >
             {getVisibleProducts().map((product) => (
               <div
                 key={product.id}
-                className="flex-shrink-0 bg-white !p-3 !m-2 w-full sm:w-1/2 lg:w-1/3 rounded-xl shadow-md overflow-hidden flex flex-col"
+                className="flex-shrink-0 bg-white !p-4 w-[90%] sm:w-[48%] lg:w-[30%] rounded-xl shadow-lg overflow-hidden flex flex-col"
                 style={{ minHeight: '420px' }}
               >
                 {/* Image */}
@@ -126,12 +126,12 @@ const ContinueShoppingCarousel = () => {
                     <p className="text-xs text-gray-500">
                       {product.brand} • {product.model} • {product.color}
                     </p>
-                    <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                    <p className="text-gray-600 text-sm !mt-2 line-clamp-2">
                       {product.description}
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between mt-4">
+                  <div className="flex items-center justify-between !mt-4">
                     <div>
                       <span className="text-lg font-bold text-gray-900">
                         ${product.price.toFixed(2)}
