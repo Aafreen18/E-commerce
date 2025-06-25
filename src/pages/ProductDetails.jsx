@@ -28,7 +28,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="!p-6 flex flex-col md:flex-row gap-10 bg-amber-200">
+    <div className="!p-6 flex flex-col md:flex-row gap-10">
       {/* Image */}
       <div className="flex-1">
         <img
