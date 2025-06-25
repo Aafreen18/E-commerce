@@ -7,7 +7,7 @@ import Checkout from '../pages/Checkout';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/products/:id" element={<ProductDetails />} />
+    <Route path="/product/:id" element={<ProductDetails />} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/checkout" element={<Checkout />} />
   </Routes>

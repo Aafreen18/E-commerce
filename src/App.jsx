@@ -6,7 +6,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-[calc(100vh-64px)]">
+      <main className="min-h-[calc(100vh-250px)]">
         <AppRoutes />
       </main>
       <Footer />

@@ -9,16 +9,30 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const fetchProductById = createAsyncThunk(
+  'products/fetchProductById',
+  async (productId) => {
+    const res = await axios.get(`https://fakestoreapi.in/api/products/${productId}`);
+    return res.data.product; 
+  }
+);
+
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     items: [],
+    currentProduct: null, // Add this to store the single product
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearCurrentProduct: (state) => {
+      state.currentProduct = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
+      // For fetching all products
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -30,8 +44,23 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      
+      // For fetching single product by ID
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentProduct = action.payload;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
+export const { clearCurrentProduct } = productSlice.actions;
 export default productSlice.reducer;
