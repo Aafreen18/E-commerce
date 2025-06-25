@@ -27,29 +27,24 @@ const Cart = () => {
             <CartItem key={item.id} item={item} />
           ))}
           
-          <div className="flex flex-col h-full">
-  
-          <div className="bg-blue-100 flex-grow rounded-xl !p-3 shadow-lg sm:p-8 mx-4 sm:mx-10 my-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-            <div className="flex flex-1 flex-col sm:flex-row justify-between items-center">
-              <div className="text-xl font-semibold text-gray-800 mb-4 sm:mb-0">
-                Total Amount: <span className="text-blue-600 font-bold">${totalPrice.toFixed(2)}</span>
+          <div className="">
+            <div className="bg-blue-100 flex-grow rounded-xl !p-3 shadow-lg sm:p-8 mx-4 sm:mx-10 my-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+              <div className="flex flex-1 flex-col sm:flex-row justify-between items-center">
+                <div className="text-xl font-semibold text-gray-800 mb-4 sm:mb-0">
+                  Total Amount: <span className="text-blue-600 font-bold">${totalPrice.toFixed(2)}</span>
+                </div>
+                <Link
+                  to="/checkout"
+                  className="bg-white !p-2 !m-2 rounded-lg text-blue-600 font-semibold shadow hover:transform transition-transform hover:scale-105"
+                >
+                  Proceed to Checkout
+                </Link>
               </div>
-              <Link
-                to="/checkout"
-                className="bg-white !p-2 !m-2 rounded-lg text-blue-600 font-semibold shadow hover:transform transition-transform hover:scale-105"
-              >
-                Proceed to Checkout
-              </Link>
             </div>
+
+            <ContinueShoppingCarousel/>
+
           </div>
-
-          
-        <ContinueShoppingCarousel/>
-            
-        
-      </div>
-
-
         </>
       )}
     </div>

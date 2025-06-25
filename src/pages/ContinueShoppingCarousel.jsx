@@ -90,12 +90,12 @@ const ContinueShoppingCarousel = () => {
               {getVisibleProducts().map((product) => (
                 <div
                   key={product.id}
-                  className="flex-shrink-0 bg-white w-full sm:w-1/3 rounded-xl shadow-md overflow-hidden flex flex-col"
+                  className="flex-shrink-0 bg-white  !p-3 !m-2 w-full sm:w-1/3 rounded-xl shadow-md overflow-hidden flex flex-col"
                   style={{ minHeight: '420px' }}
                 >
                 
                   {/* Image */}
-                  <div className="h-56 bg-gray-100 flex items-center justify-center p-4">
+                  <div className="h-56 flex items-center justify-center p-4">
                     <img
                       src={product.image}
                       alt={product.title}
@@ -128,7 +128,7 @@ const ContinueShoppingCarousel = () => {
                           </span>
                         )}
                       </div>
-                      <button className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm">
+                      <button className="!p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
                         Add to Cart
                       </button>
                     </div>
