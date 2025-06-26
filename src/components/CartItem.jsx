@@ -57,6 +57,10 @@ const CartItem = ({ item, index }) => {
           src={item.image}
           alt={item.title}
           className="w-full h-32 sm:w-32 sm:h-32 object-contain rounded-lg bg-gray-50 p-2"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = '/fallbackImg.jpg'; 
+          }}
         />
       </div>
 

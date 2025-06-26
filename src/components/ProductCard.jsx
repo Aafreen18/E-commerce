@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
           className="h-48 w-full object-contain !mb-4"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = '/fallbackImg.jpg'; r
+            e.target.src = '/fallbackImg.jpg'; 
           }}
         />
       </Link>

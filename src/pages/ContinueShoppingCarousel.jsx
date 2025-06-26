@@ -114,6 +114,10 @@ const ContinueShoppingCarousel = () => {
                     src={product.image}
                     alt={product.title}
                     className="max-h-full object-contain"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/fallbackImg.jpg'; 
+                    }}
                   />
                 </div>
 
