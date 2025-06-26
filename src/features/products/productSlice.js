@@ -5,6 +5,7 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
     const res = await axios.get('https://fakestoreapi.in/api/products');
+    console.log(res.data);
     return res.data;
   }
 );
@@ -20,8 +21,8 @@ export const fetchProductById = createAsyncThunk(
 export const fetchProductsCategory = createAsyncThunk(
   'products/fetchCategory',
   async () => {
-    const response = await fetch(`https://fakestoreapi.in/api/products/category`);
-    return await response.json();
+    const response = await axios.get(`https://fakestoreapi.in/api/products/category`);
+    return response.data;
   }
 );
 
@@ -29,8 +30,8 @@ export const fetchProductsCategory = createAsyncThunk(
 export const fetchProductsByCategory = createAsyncThunk(
   'products/fetchByCategory',
   async (category) => {
-    const response = await fetch(`https://fakestoreapi.in/api/products/category?type=${category}`);
-    return await response.json();
+    const response = await axios.get(`https://fakestoreapi.in/api/products/category?type=${category}`);
+    return response.data;
   }
 );
 

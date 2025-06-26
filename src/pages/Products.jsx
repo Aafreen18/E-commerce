@@ -30,6 +30,7 @@ const Products = () => {
 
   if (loading) return <div className="text-center !py-10 text-lg">Loading categories...</div>;
   if (error) return <div className="text-center text-red-600 !py-10">Error: {error}</div>;
+  if (!data?.categories) return <div className="text-center !py-10">No categories found</div>;
 
   return (
     <div className="">
@@ -48,7 +49,7 @@ const Products = () => {
             >
               <div className="relative w-full h-90 overflow-hidden">
                 <img
-                  src={categoryImages[category]}
+                  src={categoryImages[category.toLowerCase()]}
                   alt={category}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
