@@ -2,19 +2,25 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductsCategory } from '../features/products/productSlice';
 import { Link } from 'react-router-dom';
+import tvImg from '../assets/tv.jpg';
+import audioImg from '../assets/audio.jpg';
+import laptopImg from '../assets/laptop.jpg';
+import mobileImg from '../assets/mobile.jpg';
+import gamingImg from '../assets/gaming.jpg';
+import appliancesImg from '../assets/appliances.jpg';
 
 const Products = () => {
   const dispatch = useDispatch();
   const { items: data, loading, error } = useSelector((state) => state.products);
 
   const categoryImages = {
-    tv: "/assets/tv.jpg",
-    audio: "/assets/audio.jpg",
-    laptop: "/assets/laptop.jpg",
-    mobile: "/assets/mobile.jpg",
-    gaming: "/assets/gaming.jpg",
-    appliances: "/assets/appliances.jpg"
-  };
+  tv: tvImg,
+  audio: audioImg,
+  laptop: laptopImg,
+  mobile: mobileImg,
+  gaming: gamingImg,
+  appliances: appliancesImg
+};
 
   useEffect(() => {
     dispatch(fetchProductsCategory());
@@ -26,7 +32,7 @@ const Products = () => {
   return (
     <div className="">
       <h1 className="text-3xl font-bold !pt-3 !px-3">Product Categories</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 !p-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 !p-5">
         {data.categories?.map((category) => (
           <Link 
             to={`/category/${category}`} 
@@ -39,7 +45,7 @@ const Products = () => {
                 <img
                   src={categoryImages[category]} 
                   alt={category}
-                  className="w-full h-40 object-cover rounded-md !mb-3"
+                  className="w-full h-100 object-cover rounded-md !mb-3"
                 />
                 <button className="bg-blue-600 hover:bg-blue-700 text-white !px-4 !py-2 rounded-md transition-colors duration-300">
                   Shop Now
