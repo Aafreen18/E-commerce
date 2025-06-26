@@ -35,6 +35,10 @@ const ProductDetails = () => {
           src={product.image}
           alt={product.title}
           className="w-full h-auto max-h-[500px] object-contain"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = '/fallbackImg.jpg'; 
+          }}
         />
       </div>
 
