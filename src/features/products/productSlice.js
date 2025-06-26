@@ -17,6 +17,23 @@ export const fetchProductById = createAsyncThunk(
   }
 );
 
+export const fetchProductsCategory = createAsyncThunk(
+  'products/fetchCategory',
+  async () => {
+    const response = await fetch(`https://fakestoreapi.in/api/products/category`);
+    return await response.json();
+  }
+);
+
+
+export const fetchProductsByCategory = createAsyncThunk(
+  'products/fetchByCategory',
+  async (category) => {
+    const response = await fetch(`https://fakestoreapi.in/api/products/category?type=${category}`);
+    return await response.json();
+  }
+);
+
 const productSlice = createSlice({
   name: 'products',
   initialState: {
@@ -57,6 +74,32 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductById.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //fetch all category
+      .addCase(fetchProductsCategory.pending, (state) => {
+        state.status = true;
+      })
+      .addCase(fetchProductsCategory.fulfilled, (state, action) => {
+        state.status = true;
+        state.items = action.payload;
+      })
+      .addCase(fetchProductsCategory.rejected, (state, action) => {
+        state.status = false;
+        state.error = action.error.message;
+      })
+
+      //fetch product by category 
+      .addCase(fetchProductsByCategory.pending, (state) => {
+        state.status = true;
+      })
+      .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+        state.status = true;
+        state.items = action.payload;
+      })
+      .addCase(fetchProductsByCategory.rejected, (state, action) => {
+        state.status = false;
         state.error = action.error.message;
       });
   },
