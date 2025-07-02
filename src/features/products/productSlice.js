@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axiosInstance from '../../api/AxiosInstance';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    const res = await axios.get('https://fakestoreapi.in/api/products');
-    console.log(res.data);
+    const res = await axiosInstance.get('/products');
     return res.data;
   }
 );
@@ -13,27 +12,27 @@ export const fetchProducts = createAsyncThunk(
 export const fetchProductById = createAsyncThunk(
   'products/fetchProductById',
   async (productId) => {
-    const res = await axios.get(`https://fakestoreapi.in/api/products/${productId}`);
-    return res.data.product; 
+    const res = await axiosInstance.get(`/products/${productId}`);
+    return res.data.product;
   }
 );
 
 export const fetchProductsCategory = createAsyncThunk(
   'products/fetchCategory',
   async () => {
-    const response = await axios.get(`https://fakestoreapi.in/api/products/category`);
+    const response = await axiosInstance.get('/products/category');
     return response.data;
   }
 );
-
 
 export const fetchProductsByCategory = createAsyncThunk(
   'products/fetchByCategory',
   async (category) => {
-    const response = await axios.get(`https://fakestoreapi.in/api/products/category?type=${category}`);
+    const response = await axiosInstance.get(`/products/category?type=${category}`);
     return response.data;
   }
 );
+
 
 const productSlice = createSlice({
   name: 'products',

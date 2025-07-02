@@ -44,7 +44,7 @@ const Products = () => {
             className='shadow-2xl'
           >
             <Link
-              to={`/category/${category}`}
+              to={`/products/category/${category}`}
               className="block bg-white rounded-xl shadow-lg hover:shadow-xl overflow-hidden group relative"
             >
               <div className="relative w-full h-90 overflow-hidden">
