@@ -33,23 +33,44 @@ export const fetchProductsByCategory = createAsyncThunk(
   }
 );
 
+export const fetchProductsByPage = createAsyncThunk(
+  'products/fetchByPage',
+  async (page, { rejectWithValue }) => {
+    try {
+      const res = await axiosInstance.get(`/products?page=${page}&limit=20`);
+      return res.data.products; 
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
 
 const productSlice = createSlice({
   name: 'products',
   initialState: {
-    items: [],
-    currentProduct: null, // Add this to store the single product
+    items: [], // general product list
+    paginatedItems: [], // infinite scroll product list
+    currentProduct: null,
+    currentPage: 1,
+    hasMore: true,
     loading: false,
+    status: false,
     error: null,
   },
   reducers: {
     clearCurrentProduct: (state) => {
       state.currentProduct = null;
-    }
+    },
+    resetPaginatedProducts: (state) => {
+      state.paginatedItems = [];
+      state.currentPage = 1;
+      state.hasMore = true;
+    },
   },
   extraReducers: (builder) => {
     builder
-      // For fetching all products
+      // 🔁 All products
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -62,8 +83,8 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      
-      // For fetching single product by ID
+
+      // 🔁 Product by ID
       .addCase(fetchProductById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -77,7 +98,7 @@ const productSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //fetch all category
+      // 🔁 Category list
       .addCase(fetchProductsCategory.pending, (state) => {
         state.status = true;
       })
@@ -90,7 +111,7 @@ const productSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //fetch product by category 
+      // 🔁 Products by Category
       .addCase(fetchProductsByCategory.pending, (state) => {
         state.status = true;
       })
@@ -101,9 +122,26 @@ const productSlice = createSlice({
       .addCase(fetchProductsByCategory.rejected, (state, action) => {
         state.status = false;
         state.error = action.error.message;
+      })
+
+      // ✅ Infinite scroll paginated products
+      .addCase(fetchProductsByPage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+     .addCase(fetchProductsByPage.fulfilled, (state, action) => {
+        const newItems = action.payload; 
+        state.loading = false;
+        state.paginatedItems.push(...newItems); 
+        state.hasMore = newItems.length === 20; 
+        state.currentPage += 1;
+      })
+      .addCase(fetchProductsByPage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { clearCurrentProduct } = productSlice.actions;
+export const { clearCurrentProduct, resetPaginatedProducts } = productSlice.actions;
 export default productSlice.reducer;

@@ -1,29 +1,17 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import ProductCard from '../components/ProductCard';
-import { fetchProducts } from '../features/products/productSlice';
+import InfiniteProductList from '../components/InfiniteProductList';
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const { items: data, loading, error } = useSelector((state) => state.products);
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
+  
   return (
-    <div className="w-full mx-auto px-6 py-10">
-      <h2 className="text-3xl font-bold !ms-5 !pt-3" style={{overflowY:'hidden'}}>Featured Products</h2>
+    <>
+      <div className="w-full mx-auto px-6 py-10 min-h-screen" id="top-of-page">
+        <h2 className="text-3xl font-bold !ms-5 !pt-3" style={{overflowY:'hidden'}}>Featured Products</h2>
 
-      {loading && <p className='!ms-5 !pt-3'>Loading products...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 !m-5">
-        {data.products?.map((product) => (
-          <ProductCard key={product.id} product={product}  />
-        ))}
+        <InfiniteProductList />
       </div>
-    </div>
+
+      
+    </>
   );
 };
 

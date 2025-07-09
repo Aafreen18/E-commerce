@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../features/cart/cartSlice';
 import { ShoppingCart } from 'lucide-react'; 
+import { motion } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
@@ -11,7 +12,13 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="border rounded-2xl shadow-md !p-5 hover:shadow-lg transition duration-300 flex flex-col">
+    <motion.div 
+      className="border rounded-2xl shadow-md !p-5 hover:shadow-lg overflow-hidden transition duration-300 flex flex-col"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+
+      >
       {/* Image */}
       <Link to={`/product/${product.id}`}>
         <img
@@ -46,7 +53,7 @@ const ProductCard = ({ product }) => {
         <ShoppingCart className="w-5 h-5" />
         Add to Cart
       </button>
-    </div>
+    </motion.div>
   );
 };
 
