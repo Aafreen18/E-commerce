@@ -35,7 +35,7 @@ const Products = () => {
   return (
     <div className="">
       <h1 className="text-3xl font-bold text-gray-800 !px-3 !py-3">Product Categories</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 overflow-hidden !px-3 !py-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 overflow-hidden !px-3 !py-5">
         {data.categories?.map((category) => (
           <motion.div
             key={category}

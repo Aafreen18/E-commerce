@@ -38,7 +38,8 @@ export const fetchProductsByPage = createAsyncThunk(
   async (page, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get(`/products?page=${page}&limit=20`);
-      return res.data.products; 
+      console.log('API Response:', res.data); // Add this to check the response structure
+      return res.data.products || []; // Fallback to empty array if products is undefined
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -130,10 +131,13 @@ const productSlice = createSlice({
         state.error = null;
       })
      .addCase(fetchProductsByPage.fulfilled, (state, action) => {
-        const newItems = action.payload; 
         state.loading = false;
-        state.paginatedItems.push(...newItems); 
-        state.hasMore = newItems.length === 20; 
+        
+        // Safely handle the payload
+        const newItems = Array.isArray(action.payload) ? action.payload : [];
+        
+        state.paginatedItems.push(...newItems);
+        state.hasMore = newItems.length === 20;
         state.currentPage += 1;
       })
       .addCase(fetchProductsByPage.rejected, (state, action) => {
