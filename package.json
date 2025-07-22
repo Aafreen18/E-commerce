@@ -14,6 +14,8 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.10",
     "axios": "^1.10.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "framer-motion": "^12.18.1",
     "heroicons": "^2.2.0",
     "lucide-react": "^0.518.0",
