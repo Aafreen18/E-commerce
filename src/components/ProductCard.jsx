@@ -11,6 +11,10 @@ const ProductCard = ({ product }) => {
     dispatch(addToCart(product));
   };
 
+  const encodedUrl = encodeURIComponent("https://storage.googleapis.com/fir-auth-1c3bc.appspot.com/1691074519203-galaxy S22 5G.jpg");
+
+  const imageSrc = `http://localhost:5000/image?url=${encodedUrl}`;
+
   return (
     <motion.div 
       className="border rounded-2xl shadow-md !p-5 hover:shadow-lg overflow-hidden transition duration-300 flex flex-col"
@@ -22,7 +26,7 @@ const ProductCard = ({ product }) => {
       {/* Image */}
       <Link to={`/product/${product.id}`}>
         <img
-          src={product.image}
+          src={imageSrc}
           alt={product.title}
           className="h-48 w-full object-contain !mb-4"
           onError={(e) => {
