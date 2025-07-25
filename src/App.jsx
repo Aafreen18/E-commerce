@@ -27,7 +27,7 @@ const App = () => {
   return (
     <>
       <Routes>
-        {/* Register route - accessible without authentication */}
+        {/* login route - accessible without authentication */}
         <Route 
           path="/login" 
           element={
@@ -52,7 +52,7 @@ const App = () => {
                 <Footer />
               </>
             ) : (
-              <Navigate to="/register" replace />
+              <Navigate to="/login" replace />
             )
           } 
         />

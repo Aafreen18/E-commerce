@@ -93,7 +93,7 @@ const InfiniteProductList = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.02 }}
-            className="min-h-[300px] p-2 flex"
+            className="min-h-[300px] p-2 flex overflow-hidden"
           >
             <ProductCard product={product} />
           </motion.div>
