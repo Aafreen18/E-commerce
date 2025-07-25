@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, registerUser } from '../features/user/authSlice'; // adjust path if needed
 
 const Login = ({ onLogin }) => {
+  const dispatch = useDispatch();
+  const { user, isAuthenticated, loading } = useSelector((state) => state.auth);
+
   const [isLogin, setIsLogin] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,36 +23,35 @@ const Login = ({ onLogin }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      if (isLogin) {
-        const response = await axios.post('https://api.escuelajs.co/api/v1/auth/login', {
-          email: formData.email,
-          password: formData.password
-        });
-
-        localStorage.setItem('token', response.data.access_token);
-        onLogin(); // Navigate after auth
-      } else {
-        await axios.post('https://api.escuelajs.co/api/v1/users/', {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          avatar: formData.avatar || 'https://i.imgur.com/6VBx3io.png' // Default avatar if empty
-        });
-
-        alert('Registration successful! You can now log in.');
-        toggleForm(); // Switch to login after registering
-      }
-    } catch (error) {
-      alert(error.response?.data?.message || 'Something went wrong');
-    } finally {
-      setIsSubmitting(false);
+  if (isLogin) {
+    if (user && isAuthenticated) {
+      alert('You are already logged in.');
+      return;
     }
-  };
+
+    const resultAction = await dispatch(loginUser({ email: formData.email, password: formData.password }));
+
+    if (loginUser.fulfilled.match(resultAction)) {
+      onLogin(); // proceed after successful login
+    } else {
+      alert(resultAction.payload || 'Login failed. Please check your credentials.');
+    }
+  } else {
+    const resultAction = await dispatch(registerUser({ userData: formData }));
+
+    if (registerUser.fulfilled.match(resultAction)) {
+      alert('Registration successful! You can now log in.');
+      toggleForm();
+    } else {
+      alert(resultAction.payload || 'Registration failed. Please try again.');
+    }
+  }
+};
+
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-white !p-8">
@@ -109,7 +111,7 @@ const Login = ({ onLogin }) => {
               value={formData.email}
               onChange={handleChange}
               autoComplete="off"
-              readOnly // This will be removed on focus
+              readOnly
               onFocus={(e) => e.target.removeAttribute('readOnly')}
               className="w-full !mb-2 border-2 z-10 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none "
               required
@@ -128,7 +130,7 @@ const Login = ({ onLogin }) => {
               value={formData.password}
               onChange={handleChange}
               autoComplete="off"
-              readOnly // This will be removed on focus
+              readOnly
               onFocus={(e) => e.target.removeAttribute('readOnly')}
               className="w-full  !mb-2 border-2 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400"
               required
@@ -141,10 +143,10 @@ const Login = ({ onLogin }) => {
           </div>
           <button
             type="submit"
-            disabled={isSubmitting}
-            className={`w-full bg-blue-600 text-white font-semibold !py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center ${isSubmitting ? 'opacity-80' : ''}`}
+            disabled={loading}
+            className={`w-full bg-blue-600 text-white font-semibold !py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center ${loading ? 'opacity-80' : ''}`}
           >
-            {isSubmitting ? (
+            {loading ? (
               <>
                 <svg className="animate-spin -ml-1 !mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -152,11 +154,7 @@ const Login = ({ onLogin }) => {
                 </svg>
                 Processing...
               </>
-            ) : isLogin ? (
-              'Sign In'
-            ) : (
-              'Sign Up'
-            )}
+            ) : isLogin ? 'Sign In' : 'Sign Up'}
           </button>
         </form>
         <div className="flex items-center !my-6">
