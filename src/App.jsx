@@ -19,7 +19,7 @@ const App = () => {
   }, []);
 
   const handleSuccessfulAuth = () => {
-    localStorage.setItem('token', 'authenticated'); // Store a token
+    
     setIsAuthenticated(true);
     navigate('/'); // Navigate to home after auth
   };
