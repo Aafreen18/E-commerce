@@ -23,33 +23,40 @@ const Login = ({ onLogin }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (isLogin) {
-    if (user && isAuthenticated) {
-      alert('You are already logged in.');
-      return;
+    try {
+      if (isLogin) {
+        // Dispatch login action
+        const resultAction = await dispatch(loginUser({ 
+          email: formData.email, 
+          password: formData.password 
+        }));
+
+        // Check if login was successful
+        if (loginUser.fulfilled.match(resultAction)) {
+          onLogin(); // This will set isAuthenticated to true and navigate to home
+        } else {
+          // Show error message if login failed
+          alert(resultAction.payload || 'Login failed. Please check your credentials.');
+        }
+      } else {
+        // Dispatch register action
+        const resultAction = await dispatch(registerUser({ userData: formData }));
+
+        // Check if registration was successful
+        if (registerUser.fulfilled.match(resultAction)) {
+          onLogin(); // This will set isAuthenticated to true and navigate to home
+        } else {
+          // Show error message if registration failed
+          alert(resultAction.payload || 'Registration failed. Please try again.');
+        }
+      }
+    } catch (error) {
+      alert('An unexpected error occurred. Please try again.');
     }
-
-    const resultAction = await dispatch(loginUser({ email: formData.email, password: formData.password }));
-
-    if (loginUser.fulfilled.match(resultAction)) {
-      onLogin(); // proceed after successful login
-    } else {
-      alert(resultAction.payload || 'Login failed. Please check your credentials.');
-    }
-  } else {
-    const resultAction = await dispatch(registerUser({ userData: formData }));
-
-    if (registerUser.fulfilled.match(resultAction)) {
-      alert('Registration successful! You can now log in.');
-      toggleForm();
-    } else {
-      alert(resultAction.payload || 'Registration failed. Please try again.');
-    }
-  }
-};
+  };
 
 
 

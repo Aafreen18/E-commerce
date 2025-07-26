@@ -8,7 +8,9 @@ const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const baseLinkStyles = 'flex items-center !px-4 h-full text-gray-800 hover:text-blue-600 transition-colors duration-200 font-medium';
+  const isAuthenticated = user || localStorage.getItem('token');
+
+  const baseLinkStyles = 'flex items-center justify-center !px-4 h-full text-gray-800 hover:text-blue-600 transition-colors duration-200 font-medium';
   const activeLinkStyles = '!text-blue-600 border-b-2 border-blue-600';
 
   const toggleMenu = () => {
@@ -23,14 +25,14 @@ const Navbar = () => {
       {/* Logo/Brand */}
       <NavLink 
         to="/" 
-        className="text-2xl font-bold text-blue-600 flex items-center h-full"
+        className="text-2xl font-bold text-blue-600 flex items-center justify-center h-full"
       >
         <span className="bg-black text-white !px-3 !py-1 rounded !mr-2">SHOP</span>
         <span className="hidden sm:inline">MARKET</span>
       </NavLink>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex items-center h-full gap-1">
+      <div className="hidden md:flex items-center justify-center h-full lg:gap-1">
         <NavLink 
           to="/" 
           end 
@@ -60,24 +62,19 @@ const Navbar = () => {
         </NavLink>
 
         {/* User Profile */}
-        {user && (
+        {isAuthenticated && (
           <NavLink 
             to="/profile" 
             className={({ isActive }) => 
-              `flex flex-col items-center justify-center h-full !px-4 !mx-1 ${isActive ? 'text-blue-600' : 'text-gray-800'} hover:text-blue-600 transition-colors duration-200`
+              `flex items-center justify-center h-full !px-4 !mx-1 gap-2 ${isActive ? activeLinkStyles : ''} ${baseLinkStyles}`
             }
           >
             <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <User className="w-5 h-5 text-blue-600" />
+              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <User className="w-4 h-4 text-blue-600" />
               </div>
-              {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                  {totalQuantity}
-                </span>
-              )}
             </div>
-            <span className="text-xs !mt-1 font-medium">{firstName}</span>
+            <span className="text-sm font-medium">{firstName}</span>
           </NavLink>
         )}
 
@@ -85,25 +82,48 @@ const Navbar = () => {
         <NavLink 
           to="/cart" 
           className={({ isActive }) => 
-            `flex items-center justify-center h-full !px-4 !mx-1 relative ${isActive ? 'text-blue-600' : 'text-gray-800'} hover:text-blue-600`
+            `flex items-center justify-center h-full !px-4 !mx-1 relative gap-2 ${isActive ? activeLinkStyles : ''} ${baseLinkStyles}`
           }
         >
-          <ShoppingCart className="w-6 h-6" />
-          {totalQuantity > 0 && (
-            <span className="absolute top-3 right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              {totalQuantity}
-            </span>
-          )}
+          <div className="relative">
+            <ShoppingCart className="w-6 h-6" />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+                {totalQuantity}
+              </span>
+            )}
+          </div>
+          <span className="text-sm font-medium hidden lg:inline">Cart</span>
         </NavLink>
       </div>
 
       {/* Mobile Menu Button */}
-      <div className="md:hidden flex items-center gap-4">
+      <div className="md:hidden flex items-center justify-center gap-2">
+
+        {/* Cart Icon (Mobile) */}
+        <NavLink 
+          to="/cart" 
+          className={({ isActive }) => 
+            `flex items-center justify-center h-12 w-12 relative ${isActive ? 'text-blue-600' : 'text-gray-800'} hover:text-blue-600 transition-colors duration-200`
+          }
+        >
+          <div className="relative">
+            <ShoppingCart className="w-6 h-6" />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+                {totalQuantity}
+              </span>
+            )}
+          </div>
+        </NavLink>
+
         {/* User Icon (Mobile) */}
-        {user && (
+        {isAuthenticated && (
           <NavLink 
             to="/profile" 
-            className="flex items-center justify-center h-12 w-12 relative text-gray-800 hover:text-blue-600"
+            className={({ isActive }) => 
+              `flex items-center justify-center h-12 w-12 relative ${isActive ? 'text-blue-600' : 'text-gray-800'} hover:text-blue-600 transition-colors duration-200`
+            }
           >
             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
               <User className="w-4 h-4 text-blue-600" />
@@ -111,25 +131,10 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {/* Cart Icon (Mobile) */}
-        <NavLink 
-          to="/cart" 
-          className={({ isActive }) => 
-            `flex items-center justify-center h-12 w-12 relative ${isActive ? 'text-blue-600' : 'text-gray-800'}`
-          }
-        >
-          <ShoppingCart className="w-6 h-6" />
-          {totalQuantity > 0 && (
-            <span className="absolute top-2 right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              {totalQuantity}
-            </span>
-          )}
-        </NavLink>
-
         {/* Mobile Menu Toggle */}
         <button 
           onClick={toggleMenu} 
-          className="!p-2 text-gray-800 hover:text-blue-600 focus:outline-none"
+          className="!p-2 text-gray-800 hover:text-blue-600 focus:outline-none transition-colors duration-200 flex items-center justify-center"
         >
           {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -144,7 +149,7 @@ const Navbar = () => {
               end 
               onClick={toggleMenu}
               className={({ isActive }) =>
-                `block !px-6 !py-4 text-lg ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-800 hover:bg-gray-50'}`
+                `block !px-6 !py-4 text-lg border-b border-gray-100 ${isActive ? 'bg-blue-50 text-blue-600 font-semibold border-l-4 border-l-blue-600' : 'text-gray-800 hover:bg-gray-50'} transition-all duration-200`
               }
             >
               Home
@@ -153,7 +158,7 @@ const Navbar = () => {
               to="/products" 
               onClick={toggleMenu}
               className={({ isActive }) =>
-                `block !px-6 !py-4 text-lg ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-800 hover:bg-gray-50'}`
+                `block !px-6 !py-4 text-lg border-b border-gray-100 ${isActive ? 'bg-blue-50 text-blue-600 font-semibold border-l-4 border-l-blue-600' : 'text-gray-800 hover:bg-gray-50'} transition-all duration-200`
               }
             >
               Products
@@ -162,20 +167,23 @@ const Navbar = () => {
               to="/checkout" 
               onClick={toggleMenu}
               className={({ isActive }) =>
-                `block !px-6 !py-4 text-lg ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-800 hover:bg-gray-50'}`
+                `block !px-6 !py-4 text-lg border-b border-gray-100 ${isActive ? 'bg-blue-50 text-blue-600 font-semibold border-l-4 border-l-blue-600' : 'text-gray-800 hover:bg-gray-50'} transition-all duration-200`
               }
             >
               Checkout
             </NavLink>
-            {user && (
+            {isAuthenticated && (
               <NavLink 
                 to="/profile" 
                 onClick={toggleMenu}
                 className={({ isActive }) =>
-                  `block !px-6 !py-4 text-lg ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-800 hover:bg-gray-50'}`
+                  `flex items-center !px-6 !py-4 text-lg gap-3 ${isActive ? 'bg-blue-50 text-blue-600 font-semibold border-l-4 border-l-blue-600' : 'text-gray-800 hover:bg-gray-50'} transition-all duration-200`
                 }
               >
-                My Profile
+                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+                  <User className="w-3 h-3 text-blue-600" />
+                </div>
+                My Profile ({firstName})
               </NavLink>
             )}
           </div>
