@@ -91,8 +91,8 @@ const Navbar = () => {
               {avatar ? (
                 <img 
                   src={avatar} 
-                  alt={firstName} 
-                  className="w-8 h-8 rounded-full object-cover"
+                  alt={firstName.charAt(0).toUpperCase()} 
+                  className="w-8 h-8 rounded-full object-cover bg-blue-500 text-sm font-medium flex items-center justify-center"
                 />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -152,8 +152,8 @@ const Navbar = () => {
             {avatar ? (
               <img 
                 src={avatar} 
-                alt={firstName} 
-                className="w-8 h-8 rounded-full object-cover"
+                alt={firstName.charAt(0).toUpperCase()} 
+                className="w-8 h-8 rounded-full object-cover bg-blue-500 text-sm font-medium flex items-center justify-center"
               />
             ) : (
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -201,8 +201,8 @@ const Navbar = () => {
                 {avatar ? (
                   <img 
                     src={avatar} 
-                    alt={firstName} 
-                    className="w-6 h-6 rounded-full object-cover"
+                    alt={firstName.charAt(0).toUpperCase()} 
+                    className="w-8 h-8 rounded-full object-cover bg-blue-500 text-sm font-medium flex items-center justify-center"
                   />
                 ) : (
                   <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
