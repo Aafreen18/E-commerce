@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, registerUser } from '../features/user/authSlice'; // adjust path if needed
+import { loginUser, registerUser } from '../features/user/authSlice';
 
 const Login = ({ onLogin }) => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.auth);
+  const { loading, error, tokenExpired } = useSelector((state) => state.auth);
 
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -14,72 +14,73 @@ const Login = ({ onLogin }) => {
     avatar: ''
   });
 
+  const [formErrors, setFormErrors] = useState({
+    email: '',
+    password: '',
+    name: ''
+  });
+
+  // Clear errors when switching between login/register
+  useEffect(() => {
+    setFormErrors({ email: '', password: '', name: '' });
+  }, [isLogin]);
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.email) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Email is invalid';
+    
+    if (!formData.password) errors.password = 'Password is required';
+    else if (formData.password.length < 4) errors.password = 'Password must be at least 4 characters';
+    
+    if (!isLogin && !formData.name) errors.name = 'Name is required';
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const toggleForm = () => {
     setIsLogin(!isLogin);
     setFormData({ name: '', email: '', password: '', avatar: '' });
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    
+    // Clear error when user types
+    if (formErrors[name]) {
+      setFormErrors({ ...formErrors, [name]: '' });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) return;
 
     try {
       if (isLogin) {
-        // Dispatch login action
-        const resultAction = await dispatch(loginUser({ 
+        const result = await dispatch(loginUser({ 
           email: formData.email, 
           password: formData.password 
         }));
 
-        // Check if login was successful
-        if (loginUser.fulfilled.match(resultAction)) {
-          onLogin(); // This will set isAuthenticated to true and navigate to home
-        } else {
-          // Check if 401 error
-          if (resultAction.error && resultAction.error.message.includes("401")) {
-            // Try refreshing token
-            const refreshResult = await dispatch(refreshAccessToken());
-            if (refreshAccessToken.fulfilled.match(refreshResult)) {
-              // Retry login after refreshing token
-              const retryResult = await dispatch(
-                loginUser({
-                  email: formData.email,
-                  password: formData.password
-                })
-              );
-              if (loginUser.fulfilled.match(retryResult)) {
-                onLogin();
-              } else {
-                alert(retryResult.payload || 'Login failed after token refresh.');
-              }
-            } else {
-              alert(refreshResult.payload || 'Session expired. Please log in again.');
-            }
-          } else {
-            alert(resultAction.payload || 'Login failed. Please check your credentials.');
-          }
+        if (loginUser.fulfilled.match(result)) {
+          onLogin();
         }
       } else {
-        // Dispatch register action
-        const resultAction = await dispatch(registerUser({ userData: formData }));
-
-        // Check if registration was successful
-        if (registerUser.fulfilled.match(resultAction)) {
-          onLogin(); // This will set isAuthenticated to true and navigate to home
-        } else {
-          // Show error message if registration failed
-          alert(resultAction.payload || 'Registration failed. Please try again.');
+        const result = await dispatch(registerUser({ userData: formData }));
+        
+        if (registerUser.fulfilled.match(result)) {
+          onLogin();
         }
       }
-    } catch (error) {
-      alert('An unexpected error occurred. Please try again.');
+    } catch (err) {
+      // Errors are already handled by the slice
+      console.error('Authentication error:', err);
     }
   };
-
-
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-white !p-8">
@@ -95,6 +96,19 @@ const Login = ({ onLogin }) => {
           {isLogin ? 'Welcome Back' : 'Create Account'}
           <div className="w-16 h-1 bg-blue-600 mx-auto !mt-2 rounded-full"></div>
         </h2>
+        
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+        
+        {tokenExpired && (
+          <div className="mb-4 p-3 bg-yellow-100 text-yellow-700 rounded-lg text-sm">
+            Your session has expired. Please log in again.
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-5">
           {!isLogin && (
             <>
@@ -105,7 +119,7 @@ const Login = ({ onLogin }) => {
                   placeholder="Full Name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full  !mb-2 border-2 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400"
+                  className={`w-full !mb-2 border-2 ${formErrors.name ? 'border-red-500' : 'border-gray-200'} !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400`}
                   required
                 />
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -113,6 +127,7 @@ const Login = ({ onLogin }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </span>
+                {formErrors.name && <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>}
               </div>
               <div className="relative">
                 <input
@@ -121,7 +136,7 @@ const Login = ({ onLogin }) => {
                   placeholder="Avatar URL (optional)"
                   value={formData.avatar}
                   onChange={handleChange}
-                  className="w-full  !mb-2 border-2 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400"
+                  className="w-full !mb-2 border-2 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400"
                 />
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,10 +153,7 @@ const Login = ({ onLogin }) => {
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
-              autoComplete="off"
-              readOnly
-              onFocus={(e) => e.target.removeAttribute('readOnly')}
-              className="w-full !mb-2 border-2 z-10 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none "
+              className={`w-full !mb-2 border-2 ${formErrors.email ? 'border-red-500' : 'border-gray-200'} !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400`}
               required
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -149,6 +161,7 @@ const Login = ({ onLogin }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </span>
+            {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
           </div>
           <div className="relative">
             <input
@@ -157,10 +170,7 @@ const Login = ({ onLogin }) => {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              autoComplete="off"
-              readOnly
-              onFocus={(e) => e.target.removeAttribute('readOnly')}
-              className="w-full  !mb-2 border-2 border-gray-200 !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400"
+              className={`w-full !mb-2 border-2 ${formErrors.password ? 'border-red-500' : 'border-gray-200'} !p-3 !pl-10 rounded-lg focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 outline-none placeholder-gray-400`}
               required
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -168,6 +178,7 @@ const Login = ({ onLogin }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </span>
+            {formErrors.password && <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>}
           </div>
           <button
             type="submit"
