@@ -13,27 +13,27 @@ const Navbar = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   
-  const token = localStorage.getItem('token');
-  const isAuthenticated = Boolean(user || token);
+  const access_token = localStorage.getItem('access_token');
+  const isAuthenticated = Boolean(user || access_token);
 
   const baseLinkStyles = 'flex items-center justify-center !px-4 h-full text-gray-800 hover:text-blue-600 transition-colors duration-200 font-medium';
   const activeLinkStyles = '!text-blue-600 border-b-2 border-blue-600';
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (token && !user && !profile) {
-        setLoading(true);
+      if (access_token && !user && !profile) {
         try {
           const response = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
+              'Authorization': `Bearer ${access_token}`,
             }
           });
           setProfile(response.data);
         } catch (error) {
           console.error('Failed to fetch profile:', error);
-          if (error.response?.status === 401) {
+
+          const status = error.response?.status;
+          if (status === 401) {
             localStorage.removeItem('token');
             navigate('/login');
           }
@@ -41,10 +41,11 @@ const Navbar = () => {
           setLoading(false);
         }
       }
+
     };
 
     fetchProfile();
-  }, [token, user, profile, navigate]);
+  }, [access_token, user, profile, navigate]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -114,10 +115,10 @@ const Navbar = () => {
             `flex items-center justify-center h-full !px-4 !mx-1 relative gap-2 ${isActive ? activeLinkStyles : ''} ${baseLinkStyles}`
           }
         >
-          <div className="relative">
+          <div className="relative !p-3">
             <ShoppingCart className="w-6 h-6" />
             {totalQuantity > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+              <span className="absolute -top-0 -right-0 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
                 {totalQuantity}
               </span>
             )}
@@ -136,7 +137,7 @@ const Navbar = () => {
         >
           <ShoppingCart className="w-6 h-6" />
           {totalQuantity > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+            <span className="absolute -top-0 -right-0 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
               {totalQuantity}
             </span>
           )}

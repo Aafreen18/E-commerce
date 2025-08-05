@@ -4,7 +4,7 @@ import { loginUser, registerUser } from '../features/user/authSlice'; // adjust 
 
 const Login = ({ onLogin }) => {
   const dispatch = useDispatch();
-  const { user, isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -38,8 +38,29 @@ const Login = ({ onLogin }) => {
         if (loginUser.fulfilled.match(resultAction)) {
           onLogin(); // This will set isAuthenticated to true and navigate to home
         } else {
-          // Show error message if login failed
-          alert(resultAction.payload || 'Login failed. Please check your credentials.');
+          // Check if 401 error
+          if (resultAction.error && resultAction.error.message.includes("401")) {
+            // Try refreshing token
+            const refreshResult = await dispatch(refreshAccessToken());
+            if (refreshAccessToken.fulfilled.match(refreshResult)) {
+              // Retry login after refreshing token
+              const retryResult = await dispatch(
+                loginUser({
+                  email: formData.email,
+                  password: formData.password
+                })
+              );
+              if (loginUser.fulfilled.match(retryResult)) {
+                onLogin();
+              } else {
+                alert(retryResult.payload || 'Login failed after token refresh.');
+              }
+            } else {
+              alert(refreshResult.payload || 'Session expired. Please log in again.');
+            }
+          } else {
+            alert(resultAction.payload || 'Login failed. Please check your credentials.');
+          }
         }
       } else {
         // Dispatch register action
