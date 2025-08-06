@@ -19,7 +19,7 @@ const ProductsByCategory = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="w-full mx-auto px-6 py-10">
+    <div className="w-full mx-auto">
       <h2 className="text-3xl font-bold !ms-5 !pt-3 capitalize" style={{overflowY:'hidden'}}>{category}</h2>
 
       {loading && <p className='!ms-5 !pt-3'>Loading products...</p>}

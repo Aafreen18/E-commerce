@@ -56,7 +56,7 @@ const CartItem = ({ item, index }) => {
         <img
           src={item.image}
           alt={item.title}
-          className="w-full h-32 sm:w-32 sm:h-32 object-contain rounded-lg bg-gray-50 p-2"
+          className="w-full h-32 sm:w-32 sm:h-32 object-contain rounded-lg bg-gray-50 !p-2"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = '/fallbackImg.jpg'; 
@@ -68,7 +68,7 @@ const CartItem = ({ item, index }) => {
       <div className="flex-1 flex flex-col justify-between">
         <div className='!p-4'>
           <h4 className="text-lg font-semibold line-clamp-2">{item.title}</h4>
-          <p className="text-gray-600 mt-1">${item.price.toFixed(2)}</p>
+          <p className="text-gray-600 !mt-1">${item.price.toFixed(2)}</p>
         </div>
 
         {/* Combined Quantity and Delete Controls */}
@@ -76,7 +76,7 @@ const CartItem = ({ item, index }) => {
           <div className="flex items-center gap-4 !p-4">
             <motion.button
               onClick={decreaseQty}
-              className="p-2 text-gray-700 hover:bg-blue-600 rounded-full hover:text-white"
+              className="!p-2 text-gray-700 hover:bg-blue-600 rounded-full hover:text-white"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -89,7 +89,7 @@ const CartItem = ({ item, index }) => {
             
             <motion.button
               onClick={increaseQty}
-              className="p-2 text-gray-700 hover:bg-blue-600 rounded-full hover:text-white"
+              className="!p-2 text-gray-700 hover:bg-blue-600 rounded-full hover:text-white"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -98,7 +98,7 @@ const CartItem = ({ item, index }) => {
             
             <motion.button
               onClick={handleRemove}
-              className="p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-gray-100 ml-2"
+              className="!p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-gray-100 !ml-2"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >

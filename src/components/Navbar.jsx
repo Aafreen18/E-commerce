@@ -115,10 +115,10 @@ const Navbar = () => {
             `flex items-center justify-center h-full !px-4 !mx-1 relative gap-2 ${isActive ? activeLinkStyles : ''} ${baseLinkStyles}`
           }
         >
-          <div className="relative !p-3">
+          <div className="relative !p-3 overflow-hidden">
             <ShoppingCart className="w-6 h-6" />
             {totalQuantity > 0 && (
-              <span className="absolute -top-0 -right-0 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+              <span className="overflow-hidden absolute -top-0 -right-0 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
                 {totalQuantity}
               </span>
             )}
@@ -135,9 +135,9 @@ const Navbar = () => {
             `flex items-center justify-center h-12 w-12 relative ${isActive ? 'text-blue-600' : 'text-gray-800'} hover:text-blue-600 transition-colors duration-200`
           }
         >
-          <ShoppingCart className="w-6 h-6" />
+          <ShoppingCart className="w-6 h-6 overflow-hidden" />
           {totalQuantity > 0 && (
-            <span className="absolute -top-0 -right-0 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+            <span className="absolute overflow-hidden -top-0 -right-0 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
               {totalQuantity}
             </span>
           )}

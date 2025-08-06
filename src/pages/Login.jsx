@@ -98,13 +98,13 @@ const Login = ({ onLogin }) => {
         </h2>
         
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+          <div className="!mb-4 !p-3 bg-red-100 text-red-700 rounded-lg text-sm">
             {error}
           </div>
         )}
         
         {tokenExpired && (
-          <div className="mb-4 p-3 bg-yellow-100 text-yellow-700 rounded-lg text-sm">
+          <div className="!mb-4 !p-3 bg-yellow-100 text-yellow-700 rounded-lg text-sm">
             Your session has expired. Please log in again.
           </div>
         )}
@@ -127,7 +127,7 @@ const Login = ({ onLogin }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </span>
-                {formErrors.name && <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>}
+                {formErrors.name && <p className="text-red-500 text-sm !mt-1">{formErrors.name}</p>}
               </div>
               <div className="relative">
                 <input
@@ -161,7 +161,7 @@ const Login = ({ onLogin }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </span>
-            {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
+            {formErrors.email && <p className="text-red-500 text-sm !mt-1">{formErrors.email}</p>}
           </div>
           <div className="relative">
             <input
@@ -178,7 +178,7 @@ const Login = ({ onLogin }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </span>
-            {formErrors.password && <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>}
+            {formErrors.password && <p className="text-red-500 text-sm !mt-1">{formErrors.password}</p>}
           </div>
           <button
             type="submit"

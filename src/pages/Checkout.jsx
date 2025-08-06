@@ -64,7 +64,7 @@ const Checkout = () => {
             <span className="font-semibold text-blue-600">{formData.email}</span>
           </p>
           
-          <div className="bg-blue-50 rounded-lg p-4 !mb-6">
+          <div className="bg-blue-50 rounded-lg !p-4 !mb-6">
             <div className="flex items-center justify-center space-x-6 text-sm text-blue-800">
               <div className="flex items-center space-x-2">
                 <Truck className="w-4 h-4" />
@@ -157,7 +157,7 @@ const Checkout = () => {
                   <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-4 rounded-lg font-bold text-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white !py-4 rounded-lg font-bold text-lg transition-colors duration-200 flex items-center justify-center space-x-2"
                   >
                     {loading ? (
                       <>

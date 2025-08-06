@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AppRoutes from './routes/AppRoutes';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Login from './pages/Login';
 import axios from 'axios';
 

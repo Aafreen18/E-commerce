@@ -109,7 +109,7 @@ const ContinueShoppingCarousel = () => {
                 style={{ minHeight: '420px' }}
               >
                 {/* Image */}
-                <div className="h-56 flex items-center justify-center p-4">
+                <div className="h-56 flex items-center justify-center !p-4">
                   <img
                     src={product.image}
                     alt={product.title}
@@ -122,7 +122,7 @@ const ContinueShoppingCarousel = () => {
                 </div>
 
                 {/* Details */}
-                <div className="p-5 flex flex-col justify-between flex-grow">
+                <div className="!p-5 flex flex-col justify-between flex-grow">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
                       {product.title}

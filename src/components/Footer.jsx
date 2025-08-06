@@ -47,19 +47,19 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-900 text-gray-300 !p-5">
-      <div className="px-6 py-10 flex flex-col md:flex-row justify-cente md:justify-around gap-8">
+      <div className="!px-6 !py-10 flex flex-col md:flex-row justify-cente md:justify-around gap-8">
         {/* Brand Info */}
         <motion.div 
           ref={brandRef}
           initial="hidden"
           animate={brandInView ? "visible" : "hidden"}
           variants={containerVariants}
-          className='text-center'
+          className='text-center overflow-hidden'
         >
-          <motion.h2 variants={itemVariants} className="text-xl font-bold text-white mb-4">
+          <motion.h2 variants={itemVariants} className="text-xl font-bold text-white !mb-4">
             🛒 MyShop
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-sm">
+          <motion.p variants={itemVariants} className="text-sm overflow-hidden">
             Your one-stop shop for quality products delivered at your doorstep.
           </motion.p>
         </motion.div>
@@ -72,10 +72,10 @@ const Footer = () => {
           variants={containerVariants}
           className='text-center md:text-left'
         >
-          <motion.h3 variants={itemVariants} className="text-lg font-semibold text-white mb-4">
+          <motion.h3 variants={itemVariants} className="text-lg font-semibold text-white !mb-4">
             Quick Links
           </motion.h3>
-          <motion.ul variants={containerVariants} className="space-y-2">
+          <motion.ul variants={containerVariants} className="space-y-2 overflow-hidden">
             <motion.li variants={itemVariants}>
               <Link to="/" className="hover:text-white transition-colors duration-300">Home</Link>
             </motion.li>
@@ -99,12 +99,12 @@ const Footer = () => {
           variants={containerVariants}
           className='text-center md:text-left'
         >
-          <motion.h3 variants={itemVariants} className="text-lg font-semibold text-white mb-4">
+          <motion.h3 variants={itemVariants} className="text-lg font-semibold text-white !mb-4">
             Follow Us
           </motion.h3>
           <motion.div 
             variants={containerVariants}
-            className="flex justify-center md:justify-start gap-4"
+            className="flex justify-center md:justify-start gap-1 lg:gap-4 overflow-hidden"
           >
             <motion.a 
               variants={itemVariants}
@@ -144,7 +144,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <motion.div 
-        className="text-center text-sm text-gray-300 !mt-3 border-t border-gray-700 py-4"
+        className="text-center text-sm text-gray-300 !mt-3 border-t border-gray-700 !py-4"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: false }}

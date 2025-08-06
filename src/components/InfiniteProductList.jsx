@@ -93,7 +93,7 @@ const InfiniteProductList = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.02 }}
-            className="min-h-[300px] p-2 flex overflow-hidden"
+            className="min-h-[300px] !p-2 flex overflow-hidden"
           >
             <ProductCard product={product} />
           </motion.div>
@@ -101,7 +101,7 @@ const InfiniteProductList = () => {
       })}
 
       {hasMore && currentPage > chunksLoaded * CHUNK_SIZE && (
-        <div className="col-span-full flex justify-center mt-8">
+        <div className="col-span-full flex justify-center !mt-8">
           <button
             onClick={handleLoadMoreChunk}
             className="!px-5 !py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -147,7 +147,7 @@ const InfiniteProductList = () => {
       )}
 
       {error && (
-        <p className="col-span-full text-center text-red-500 mt-4">
+        <p className="col-span-full text-center text-red-500 !mt-4">
           Error: {error}
         </p>
       )}
