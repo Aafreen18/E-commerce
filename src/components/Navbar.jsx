@@ -84,6 +84,7 @@ const Navbar = () => {
         {isAuthenticated && (
           <NavLink 
             to="/profile" 
+            state={{ user: currentUser }}
             className={({ isActive }) => 
               `flex items-center justify-center h-full !px-4 !mx-1 gap-2 ${isActive ? activeLinkStyles : ''} ${baseLinkStyles}`
             }
