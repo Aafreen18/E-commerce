@@ -147,6 +147,7 @@ const Navbar = () => {
         {isAuthenticated && (
           <NavLink 
             to="/profile" 
+            state={{ user: currentUser }}
             className={({ isActive }) => 
               `flex items-center justify-center h-12 w-12 relative ${isActive ? 'text-blue-600' : 'text-gray-800'} hover:text-blue-600 transition-colors duration-200`
             }
@@ -195,6 +196,7 @@ const Navbar = () => {
             {isAuthenticated && (
               <NavLink 
                 to="/profile" 
+                state={{ user: currentUser }}
                 onClick={toggleMenu}
                 className={({ isActive }) =>
                   `flex items-center !px-6 !py-4 text-lg gap-3 ${isActive ? 'bg-blue-50 text-blue-600 font-semibold border-l-4 border-l-blue-600' : 'text-gray-800 hover:bg-gray-50'} transition-all duration-200`
