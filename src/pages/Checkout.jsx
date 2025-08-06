@@ -65,7 +65,7 @@ const Checkout = () => {
           </p>
           
           <div className="bg-blue-50 rounded-lg !p-4 !mb-6">
-            <div className="flex items-center justify-center space-x-6 text-sm text-blue-800">
+            <div className="flex items-center justify-center space-x-6 text-sm text-blue-800 gap-4">
               <div className="flex items-center space-x-2">
                 <Truck className="w-4 h-4" />
                 <span>2-3 days delivery</span>

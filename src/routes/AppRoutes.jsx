@@ -5,6 +5,7 @@ import Cart from '../pages/Cart';
 import Checkout from '../pages/Checkout';
 import Category from '../pages/Category';
 import Products from '../pages/Products';
+import Profile from "../pages/Profile";
 
 const AppRoutes = () => (
   <Routes>
@@ -14,6 +15,7 @@ const AppRoutes = () => (
     <Route path="/products" element={<Products />} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/checkout" element={<Checkout />} />
+    <Route path="/profile" element={<Profile />} />
   </Routes>
 );
 
