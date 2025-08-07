@@ -94,6 +94,19 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
+// Update user profile
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateUserProfile',
+  async ({ id, userData }, { rejectWithValue, getState }) => {
+    try {
+      const response = await AuthAxiosInstance.put(`/users/${id}`, userData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Update failed');
+    }
+  }
+);
+
 const initialState = {
   user: null,
   access_token: null,
@@ -198,6 +211,22 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.tokenExpired = false;
       });
+
+      // Update user profile
+      builder
+        .addCase(updateUserProfile.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(updateUserProfile.fulfilled, (state, action) => {
+          state.user = action.payload;
+          state.loading = false;
+        })
+        .addCase(updateUserProfile.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        });
+
   },
 });
 
