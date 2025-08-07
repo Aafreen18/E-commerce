@@ -72,7 +72,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center !px-4 bg-gradient-to-br from-blue-50 to-white">
-      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-100">
+      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-100 !my-10">
         {/* Profile Header */}
         <div className="bg-blue-600 !py-6 !px-8 text-center">
           <div className="flex flex-col items-center">
