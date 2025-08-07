@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../features/user/authSlice';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error, tokenExpired } = useSelector((state) => state.auth);
 
   const [isLogin, setIsLogin] = useState(true);
@@ -67,13 +69,13 @@ const Login = ({ onLogin }) => {
         }));
 
         if (loginUser.fulfilled.match(result)) {
-          onLogin();
+          navigate('/');
         }
       } else {
         const result = await dispatch(registerUser({ userData: formData }));
         
         if (registerUser.fulfilled.match(result)) {
-          onLogin();
+          navigate('/');
         }
       }
     } catch (err) {

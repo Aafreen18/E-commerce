@@ -1,79 +1,62 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AppRoutes from './routes/AppRoutes';
 import { useEffect, useState } from 'react';
 import Login from './pages/Login';
 import axios from 'axios';
+import { logout, updateUser } from './features/user/authSlice'; // Ensure this import is correct
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true); // to prevent premature rendering
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
       const access_token = localStorage.getItem('access_token');
 
       if (!access_token) {
-        setIsAuthenticated(false);
         setCheckingAuth(false);
-        navigate('/login');
         return;
       }
 
       try {
         const res = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
-          headers: {
-            Authorization: `Bearer ${access_token}`
-          }
+          headers: { Authorization: `Bearer ${access_token}` }
         });
 
-        // User exists
-        if (res.data && res.data.email) {
-          setIsAuthenticated(true);
+        if (res.data?.email) {
+          dispatch(updateUser(res.data));
           setCheckingAuth(false);
-          navigate('/');
         } else {
-          // Invalid user profile
-          localStorage.removeItem('token');
-          setIsAuthenticated(false);
-          setCheckingAuth(false);
-          navigate('/login');
+          localStorage.removeItem('access_token');
+          dispatch(logout());
         }
       } catch (error) {
-        // Token invalid or network error
         console.error('Authentication failed:', error);
-        setIsAuthenticated(false);
+        localStorage.removeItem('access_token');
+        dispatch(logout());
+      } finally {
         setCheckingAuth(false);
-        navigate('/login');
       }
     };
 
     checkAuth();
-  }, []);
+  }, [dispatch]);
 
-  const handleSuccessfulAuth = () => {
-    setIsAuthenticated(true);
-    navigate('/');
-  };
-
-  if (checkingAuth) return null; // optional: or a loading spinner
+  if (checkingAuth) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
 
   return (
     <>
       <Routes>
         <Route 
           path="/login" 
-          element={
-            isAuthenticated ? (
-              <Navigate to="/" replace />
-            ) : (
-              <Login onLogin={handleSuccessfulAuth} />
-            )
-          } 
+          element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} 
         />
-        
         <Route 
           path="/*" 
           element={

@@ -1,14 +1,19 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/user/authSlice';
+import { clearCart } from '../features/cart/cartSlice';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const user = location.state?.user;
+  const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!user) {
-      navigate('/login');
+      navigate('/login', { replace: true });
     }
   }, [user, navigate]);
 
@@ -23,6 +28,12 @@ const Profile = () => {
   }
 
   const { name, email, avatar, role, id } = user;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearCart());
+  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center !px-4 bg-gradient-to-br from-blue-50 to-white">
@@ -67,8 +78,8 @@ const Profile = () => {
             <button className="!px-6 !py-2.5 !my-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               Edit Profile
             </button>
-            <button className="!px-6 !py-2.5 !my-2 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 font-medium rounded-lg shadow-sm transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-              View Activity
+            <button onClick={handleLogout} className="!px-6 !py-2.5 !my-2 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 font-medium rounded-lg shadow-sm transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+              Logout
             </button>
           </div>
         </div>
